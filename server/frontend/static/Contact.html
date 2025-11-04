@@ -1,0 +1,90 @@
+<html>
+<head>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/bootstrap.min.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: darkturquoise; height: 1in;">
+    <div class="container-fluid">
+      <h2 style="padding-right: 5%;">Dealerships</h2>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" style="font-size: larger;" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="font-size: larger;" href="/about">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" style="font-size: larger;" href="/contact">Contact Us</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contact Section -->
+  <div class="container-fluid" style="margin-top: 5%; margin-bottom: 5%;">
+    <div class="card p-4" style="border: none; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+      <div class="banner mb-4 text-center">
+        <h1>Contact Us</h1>
+        <p>We’d love to hear from you! Whether you’re interested in buying, trading, or just have questions about our inventory, reach out anytime.</p>
+      </div>
+
+      <!-- Contact Form and Info -->
+      <div class="row g-4">
+        <!-- Contact Form -->
+        <div class="col-md-6">
+          <div class="card p-4" style="height: 100%;">
+            <h3>Send Us a Message</h3>
+            <form action="/submit_contact" method="post">
+              <div class="mb-3">
+                <label for="name" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Your full name" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Your email address" required>
+              </div>
+              <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" name="phone" placeholder="Your phone number">
+              </div>
+              <div class="mb-3">
+                <label for="message" class="form-label">Your Message</label>
+                <textarea class="form-control" id="message" name="message" rows="4" placeholder="Write your message here..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" style="background-color: darkturquoise; border: none;">Submit</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="col-md-6">
+          <div class="card p-4" style="height: 100%;">
+            <h3>Visit or Call Us</h3>
+            <p><strong>Address:</strong><br>
+              1234 Main Street, Suite 100<br>
+              Springfield, USA</p>
+
+            <p><strong>Phone:</strong> (555) 123-4567<br>
+              <strong>Email:</strong> contact@bestcars.com</p>
+
+            <h4>Business Hours</h4>
+            <ul style="list-style: none; padding-left: 0;">
+              <li><strong>Mon–Fri:</strong> 9:00 AM – 7:00 PM</li>
+              <li><strong>Saturday:</strong> 9:00 AM – 5:00 PM</li>
+              <li><strong>Sunday:</strong> Closed</li>
+            </ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
