@@ -70,7 +70,7 @@ def get_request_cf(url, params=None):
 
 
 def get_dealers(state=None):
-    endpoint = "/get_dealers"
+    endpoint = "/fetchDealers"
     if state:
         endpoint += f"/{state}"
     
