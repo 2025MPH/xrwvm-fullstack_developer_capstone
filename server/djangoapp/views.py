@@ -17,7 +17,6 @@ from .restapis import get_request, analyze_review_sentiments, post_review
 logger = logging.getLogger(__name__)
 
 
-
 # Create a `login_request` view to handle sign in request
 @csrf_exempt
 def login_user(request):
@@ -58,18 +57,11 @@ def get_cars(request):
     return JsonResponse({"CarModels": cars})
 
 
-# Create a `registration` view to handle sign up request
-# (left as-is per original template)
-# @csrf_exempt
-# def registration(request):
-#     ...
-
-
 # Update the `get_dealerships` view to return a list of dealerships as JSON
 def get_dealerships(request, state="All"):
     """
     Return dealerships, optionally filtered by state, as JSON for the React frontend.
-    React's Dealers.jsx expects a response shaped like:
+    React's Dealers.jsx expects:
         { "status": 200, "dealers": [ ... ] }
     """
     if request.method != "GET":
@@ -95,14 +87,22 @@ def get_dealerships(request, state="All"):
 
 # Create a `get_dealer_reviews` view to render the reviews of a dealer
 def get_dealer_reviews(request, dealer_id):
-    # if dealer id has been provided
     if dealer_id:
         endpoint = "/fetchReviews/dealer/" + str(dealer_id)
         reviews = get_request(endpoint)
+
         for review_detail in reviews:
             response = analyze_review_sentiments(review_detail["review"])
             print(response)
-            review_detail["sentiment"] = response["sentiment"]
+
+            # ✅ FIXED: Prevent crash if sentiment API returns None
+            sentiment = (
+                response.get("sentiment")
+                if response and isinstance(response, dict)
+                else "neutral"
+            )
+            review_detail["sentiment"] = sentiment
+
         return JsonResponse({"status": 200, "reviews": reviews})
     else:
         return JsonResponse({"status": 400, "message": "Bad Request"})
