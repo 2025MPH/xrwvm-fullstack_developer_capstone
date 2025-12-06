@@ -1,0 +1,51 @@
+name: 'Lint Code'
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  lint_python:
+    name: Lint Python Files
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.12
+
+    - name: Install dependencies
+      run: |
+        pip install flake8
+
+    - name: Run Linter on Django app only
+      run: |
+        flake8 server/djangoapp --exclude=migrations,__pycache__ --max-line-length=120
+        echo "Python lint complete"
+
+  lint_js:
+    name: Lint JavaScript Files
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install JSHint
+      run: npm install -g jshint
+
+    - name: Run Linter ONLY on server scripts (NOT node_modules)
+      run: |
+        find server/database -maxdepth 1 -name "*.js" -exec jshint {} +
+        echo "JS lint complete"
