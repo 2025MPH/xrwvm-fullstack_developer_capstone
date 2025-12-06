@@ -19,25 +19,28 @@ DEALERSHIP_CF_URL = os.getenv(
 
 def get_request(endpoint, **kwargs):
     params = ""
-    if(kwargs):
-        for key,value in kwargs.items():
-            params=params+key+"="+value+"&"
+    if kwargs:
+        # Build query string safely
+        params = "&".join([f"{k}={v}" for k, v in kwargs.items()])
 
-    request_url = backend_url+endpoint+"?"+params
+    # Base URL
+    request_url = backend_url + endpoint
+
+    # Append query params only if needed
+    if params:
+        request_url += "?" + params
 
     print("GET from {} ".format(request_url))
     try:
-        # Call get method of requests library with URL and parameters
         response = requests.get(request_url)
         return response.json()
-    except:
-        # If any error occurs
-        print("Network exception occurred")
+    except Exception as e:
+        print("Network exception occurred:", e)
+
 
 def analyze_review_sentiments(text):
-    request_url = sentiment_analyzer_url+"analyze/"+text
+    request_url = sentiment_analyzer_url + "analyze/" + text
     try:
-        # Call get method of requests library with URL and parameters
         response = requests.get(request_url)
         return response.json()
     except Exception as err:
@@ -45,18 +48,15 @@ def analyze_review_sentiments(text):
         print("Network exception occurred")
 
 
-
-# request_url = sentiment_analyzer_url+"analyze/"+text
-# Add code for retrieving sentiments
-
 def post_review(data_dict):
-    request_url = backend_url+"/insert_review"
+    request_url = backend_url + "/insert_review"
     try:
-        response = requests.post(request_url,json=data_dict)
+        response = requests.post(request_url, json=data_dict)
         print(response.json())
         return response.json()
     except:
         print("Network exception occurred")
+
 
 def get_request_cf(url, params=None):
     print(f"GET from {url} with params {params}")
@@ -70,10 +70,11 @@ def get_request_cf(url, params=None):
 
 
 def get_dealers(state=None):
-    endpoint = "/fetchDealers/"
-    if state:
+    endpoint = "/fetchDealers"
+
+    if state and state != "All":
         endpoint += f"/{state}"
-    
+
     try:
         dealers = get_request(endpoint)
         return dealers
@@ -81,10 +82,12 @@ def get_dealers(state=None):
         print(f"Error fetching dealers: {e}")
         return []
 
+
 def get_dealers_from_cf(state=None):
     params = {"state": state} if state else {}
     json_result = get_request_cf(DEALERSHIP_CF_URL, params=params)
     return parse_dealer_json(json_result)
+
 
 def parse_dealer_json(json_result):
     results = []
