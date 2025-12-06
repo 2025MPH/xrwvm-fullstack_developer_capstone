@@ -22,12 +22,11 @@ spec:
       securityContext:
         seccompProfile:
           type: RuntimeDefault
-      imagePullSecrets:
-        - name: icr
+
       containers:
         - name: dealership
-          image: us.icr.io/sn-labs-zacharysmile/dealership:latest
-          imagePullPolicy: Always
+          image: dealership:latest
+          imagePullPolicy: Never
           ports:
             - containerPort: 8000
               protocol: TCP
@@ -38,4 +37,5 @@ spec:
             capabilities:
               drop:
                 - ALL
+
       restartPolicy: Always
